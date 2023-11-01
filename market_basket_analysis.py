@@ -6,7 +6,7 @@ import joblib
 input_file = 'preprocessed_data.xlsx'
 df = pd.read_excel(input_file)
 
-X = df.drop(columns=['Price'])  # Replace 'Your_Target_Column' with the actual target column name
+X = df.drop(columns=['Price'])
 y = df['Price']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
