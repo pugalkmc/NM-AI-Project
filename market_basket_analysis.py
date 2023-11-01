@@ -1,14 +1,23 @@
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
 import pandas as pd
-from mlxtend.frequent_patterns import apriori
-from mlxtend.frequent_patterns import association_rules
+import joblib
 
-df = pd.read_excel('preprocessed_data.xlsx')
+input_file = 'preprocessed_data.xlsx'
+df = pd.read_excel(input_file)
 
-basket_sets = df.groupby(['BillNo', 'Itemname'])['Quantity'].sum().unstack().fillna(0)
-basket_sets = (basket_sets > 0).astype(int)
+X = df.drop(columns=['Your_Target_Column'])  # Replace 'Your_Target_Column' with the actual target column name
+y = df['Your_Target_Column']
 
-frequent_itemsets = apriori(basket_sets, min_support=0.01, use_colnames=True)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-association_rules_df = association_rules(frequent_itemsets, metric="lift", min_threshold=1.0)
+model = RandomForestRegressor(n_estimators=100, random_state=42)  # You can adjust the number of estimators
+model.fit(X_train, y_train)
 
-print(association_rules_df)
+joblib.dump(model, 'random_forest_model.pkl')
+
+loaded_model = joblib.load('random_forest_model.pkl')
+
+predictions = loaded_model.predict(X_test)
+
+print(predictions)
