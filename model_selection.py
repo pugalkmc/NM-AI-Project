@@ -5,11 +5,9 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
-# Load your preprocessed data
 input_file = 'preprocessed_data.xlsx'
 df = pd.read_excel(input_file)
 
-# Define features (X) and target variable (y)
 X = df.drop(columns=['Price'])
 y = df['Price']
 
